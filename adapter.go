@@ -2,6 +2,7 @@ package firestoreadapter
 
 import (
 	"context"
+	"fmt"
 	"runtime"
 
 	"cloud.google.com/go/firestore"
@@ -25,7 +26,7 @@ type CasbinRule struct {
 
 // adapter represents the GCP firestore adapter for policy storage.
 type adapter struct {
-	client    *firestore.Client
+	client     *firestore.Client
 	collection string
 }
 
@@ -300,5 +301,6 @@ func loadPolicyLine(line CasbinRule, model model.Model) {
 	}
 
 LineEnd:
+	fmt.Printf("%+v\n", tokens)
 	model[sec][key].Policy = append(model[sec][key].Policy, tokens)
 }

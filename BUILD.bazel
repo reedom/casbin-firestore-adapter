@@ -1,0 +1,46 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@bazel_gazelle//:def.bzl", "gazelle")
+
+# gazelle:prefix github.com/Innovation-Upstream/casbin-firestore-adapter
+# gazelle:go_naming_convention import_alias
+# gazelle:go_naming_convention_external go_default_library
+gazelle(
+    name = "gazelle",
+)
+
+go_library(
+    name = "casbin-firestore-adapter",
+    srcs = [
+        "Config.go",
+        "adapter.go",
+        "model.go",
+    ],
+    importpath = "github.com/Innovation-Upstream/casbin-firestore-adapter",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_casbin_casbin_v2//model:go_default_library",
+        "@com_github_casbin_casbin_v2//persist:go_default_library",
+        "@com_google_cloud_go_firestore//:go_default_library",
+        "@org_golang_google_api//iterator:go_default_library",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":casbin-firestore-adapter",
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "casbin-firestore-adapter_test",
+    srcs = [
+        "adapter_test.go",
+        "model_test.go",
+    ],
+    embed = [":casbin-firestore-adapter"],
+    deps = [
+        "@com_github_casbin_casbin_v2//:go_default_library",
+        "@com_github_casbin_casbin_v2//model:go_default_library",
+        "@com_google_cloud_go_firestore//:go_default_library",
+    ],
+)
